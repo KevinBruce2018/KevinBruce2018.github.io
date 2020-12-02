@@ -88,16 +88,15 @@
         </div>
         <div class="post-toc" id="post-toc">
     <strong class="post-toc-title">目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RIP"><span class="toc-text">RIP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-text">过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exp"><span class="toc-text">exp</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E8%BF%87%E7%A8%8B"><span class="toc-text">解题过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exp"><span class="toc-text">exp</span></a></li></ol>
     <div class="back-to-top" id="back-to-top">
         <a href="javascript:void(0);">回到顶部</a>
     </div>
 </div>
         <div class="post-content">
-            <h2 id="RIP"><a href="#RIP" class="headerlink" title="RIP"></a>RIP</h2><h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><p>将题目文件拖入ida进行反汇编，查看main函数的内容。</p>
+            <h3 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h3><p>将题目文件拖入ida进行反汇编，查看main函数的内容。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [rsp+1h] [rbp-Fh]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;please input&quot;</span>);</span><br><span class="line">  gets(&amp;s, argv);</span><br><span class="line">  <span class="built_in">puts</span>(&amp;s);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;ok,bye!!!&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>main函数中使用了一个gets函数，gets函数由于不限制输入的长度，因此可以造成溢出。</p>
+<p>&lt; !–more–&gt;<br>main函数中使用了一个gets函数，gets函数由于不限制输入的长度，因此可以造成溢出。</p>
 <p>程序中有一个fun函数，会调用shell，因此可以把函数的返回地址设置为fun函数的地址。</p>
 <img src="https://tva1.sinaimg.cn/large/0081Kckwly1gl9kfy4alwj313m0jo77b.jpg" style="zoom: 50%;" />
 
@@ -123,12 +122,12 @@
 <div class="paginator">
     
         
-        
-            <a class="next" href="/2020/12/02/hello-world/">
+            <a class="prev" href="/2020/12/03/hello-world/">
+                <i class="iconfont icon-prev"></i>
                 <span class="nav-default">Hello World</span>
-                <span class="nav-mobile">下一篇</span>
-                <i class="iconfont icon-next"></i>
+                <span class="nav-mobile">上一篇</span>
             </a>
+        
         
     
 </div>
