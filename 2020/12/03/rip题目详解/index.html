@@ -96,7 +96,8 @@
         <div class="post-content">
             <h3 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h3><p>将题目文件拖入ida进行反汇编，查看main函数的内容。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [rsp+1h] [rbp-Fh]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;please input&quot;</span>);</span><br><span class="line">  gets(&amp;s, argv);</span><br><span class="line">  <span class="built_in">puts</span>(&amp;s);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;ok,bye!!!&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&lt; !–more–&gt;<br>main函数中使用了一个gets函数，gets函数由于不限制输入的长度，因此可以造成溢出。</p>
+<a id="more"></a>
+<p>main函数中使用了一个gets函数，gets函数由于不限制输入的长度，因此可以造成溢出。</p>
 <p>程序中有一个fun函数，会调用shell，因此可以把函数的返回地址设置为fun函数的地址。</p>
 <img src="https://tva1.sinaimg.cn/large/0081Kckwly1gl9kfy4alwj313m0jo77b.jpg" style="zoom: 50%;" />
 
