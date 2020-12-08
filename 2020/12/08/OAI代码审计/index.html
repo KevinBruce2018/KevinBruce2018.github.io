@@ -77,18 +77,24 @@
 <div class="main">
     <div class="content-inner">
         <div class="posts">
-    
-        <article class="post-abstract">
-            <div class="post-title">
-                <h2><a class="post-title-link" href="/2020/12/08/OAI%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">OAI代码审计</a></h2>
-            </div>
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">OAI代码审计</h2>
             <div class="post-meta">
                 <span class="post-time">2020-12-08</span>
                 
+                <span class="post-visit"> 阅读次数：<span id="busuanzi_value_page_pv"></span></span>
             </div>
-            <div class="post-content">
-                
-                    <h2 id="NAS层代码审计笔记"><a href="#NAS层代码审计笔记" class="headerlink" title="NAS层代码审计笔记"></a>NAS层代码审计笔记</h2><h3 id="UE部分"><a href="#UE部分" class="headerlink" title="UE部分"></a>UE部分</h3><p>UE部分的代码和COMMOM部分的结构基本一致，按EMM和ESM两部分信令进行分类，每个EMM和ESM文件夹中又分为若干个源文件，里面包含了若干个信令的具体实现。下面是一些对研究可能有帮助的文件。</p>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NAS%E5%B1%82%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E7%AC%94%E8%AE%B0"><span class="toc-text">NAS层代码审计笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UE%E9%83%A8%E5%88%86"><span class="toc-text">UE部分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EMM-SAP-emm-send-c"><span class="toc-text">EMM&#x2F;SAP&#x2F;emm_send.c</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COMMOM%E9%83%A8%E5%88%86"><span class="toc-text">COMMOM部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">常用的数据结构</span></a></li></ol></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">回到顶部</a>
+    </div>
+</div>
+        <div class="post-content">
+            <h2 id="NAS层代码审计笔记"><a href="#NAS层代码审计笔记" class="headerlink" title="NAS层代码审计笔记"></a>NAS层代码审计笔记</h2><h3 id="UE部分"><a href="#UE部分" class="headerlink" title="UE部分"></a>UE部分</h3><p>UE部分的代码和COMMOM部分的结构基本一致，按EMM和ESM两部分信令进行分类，每个EMM和ESM文件夹中又分为若干个源文件，里面包含了若干个信令的具体实现。下面是一些对研究可能有帮助的文件。</p>
 <h4 id="EMM-SAP-emm-send-c"><a href="#EMM-SAP-emm-send-c" class="headerlink" title="EMM/SAP/emm_send.c"></a>EMM/SAP/emm_send.c</h4><p>emm_send.c部分包含以下函数，每个函数的返回值基本都是消息的大小(size)。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * --------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"> * Functions executed by both the UE and the MME to send EMM messages</span></span><br><span class="line"><span class="comment"> * --------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_status</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_status_t</span> *, emm_status_msg *)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_detach_accept</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_data_t</span> *, detach_accept_msg *)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * --------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"> * Functions executed by the UE to send EMM messages to the network</span></span><br><span class="line"><span class="comment"> * --------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_attach_request</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_establish_t</span> *, attach_request_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_attach_complete</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_data_t</span> *, attach_complete_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_initial_detach_request</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_establish_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                    detach_request_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_detach_request</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_data_t</span> *, detach_request_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_initial_tau_request</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_establish_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                 tracking_area_update_request_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_initial_sr_request</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_establish_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                service_request_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_initial_extsr_request</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_establish_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   extended_service_request_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_identity_response</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_security_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                               identity_response_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_authentication_response</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_security_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     authentication_response_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_authentication_failure</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_security_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                    authentication_failure_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_security_mode_complete</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_security_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                    security_mode_complete_msg *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">emm_send_security_mode_reject</span><span class="params">(<span class="keyword">const</span> <span class="keyword">emm_as_security_t</span> *,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  security_mode_reject_msg *)</span></span>;</span><br></pre></td></tr></table></figure>
 
@@ -121,67 +127,29 @@
 <h3 id="COMMOM部分"><a href="#COMMOM部分" class="headerlink" title="COMMOM部分"></a>COMMOM部分</h3><h3 id="常用的数据结构"><a href="#常用的数据结构" class="headerlink" title="常用的数据结构"></a>常用的数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">emm_as_status_s</span> &#123;</span></span><br><span class="line">  <span class="keyword">uint32_t</span> ueid;      <span class="comment">/* UE lower layer identifier        */</span></span><br><span class="line">  <span class="keyword">const</span> GUTI_t *guti;     <span class="comment">/* GUTI temporary mobile identity   */</span></span><br><span class="line">  <span class="keyword">emm_as_security_data_t</span> sctx;<span class="comment">/* EPS NAS security context     */</span></span><br><span class="line">  <span class="keyword">int</span> emm_cause;      <span class="comment">/* EMM failure cause code       */</span></span><br><span class="line">&#125; <span class="keyword">emm_as_status_t</span>;</span><br></pre></td></tr></table></figure>
 
 
-                
-            </div>
-        </article>
-    
-        <article class="post-abstract">
-            <div class="post-title">
-                <h2><a class="post-title-link" href="/2020/12/03/hello-world/">Hello World</a></h2>
-            </div>
-            <div class="post-meta">
-                <span class="post-time">2020-12-03</span>
-                
-            </div>
-            <div class="post-content">
-                
-                    <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-                    <div class="read-more">
-                        <a href="/2020/12/03/hello-world/" class="read-more-link">
-                            阅读全文
-                            <i class="iconfont icon-readmore"></i>
-                        </a>
-                    </div>
-                
-            </div>
-        </article>
-    
-        <article class="post-abstract">
-            <div class="post-title">
-                <h2><a class="post-title-link" href="/2020/12/03/rip%E9%A2%98%E7%9B%AE%E8%AF%A6%E8%A7%A3/">rip题目详解</a></h2>
-            </div>
-            <div class="post-meta">
-                <span class="post-time">2020-12-03</span>
-                
-                <span class="post-category">
-                    
-                    <a class="category" href="/categories/CTF-Writeup/">CTF-Writeup</a>
-                    
-                </span>
-                
-            </div>
-            <div class="post-content">
-                
-                    <h3 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h3><p>将题目文件拖入ida进行反汇编，查看main函数的内容。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> s; <span class="comment">// [rsp+1h] [rbp-Fh]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;please input&quot;</span>);</span><br><span class="line">  gets(&amp;s, argv);</span><br><span class="line">  <span class="built_in">puts</span>(&amp;s);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;ok,bye!!!&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-                    <div class="read-more">
-                        <a href="/2020/12/03/rip%E9%A2%98%E7%9B%AE%E8%AF%A6%E8%A7%A3/" class="read-more-link">
-                            阅读全文
-                            <i class="iconfont icon-readmore"></i>
-                        </a>
-                    </div>
-                
-            </div>
-        </article>
-    
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/%E9%80%9A%E4%BF%A1%E5%AD%A6%E4%B9%A0/" title="通信学习">通信学习</a>
+            
+        </div>
+        
+    </article>
 </div>
 <div class="paginator">
     
         
         
+            <a class="next" href="/2020/12/03/hello-world/">
+                <span class="nav-default">Hello World</span>
+                <span class="nav-mobile">下一篇</span>
+                <i class="iconfont icon-next"></i>
+            </a>
+        
     
 </div>
-
+<div id="comment-container"></div>
     </div>
 </div>
 <footer class="footer-social">
